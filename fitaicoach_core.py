@@ -1,10 +1,10 @@
 import random
 # import requests # No longer needed for API calls
 import json
-from openai import OpenAI # Added OpenAI import
+from openai import OpenAI, APIStatusError, APIConnectionError, AuthenticationError, RateLimitError # Updated import
 
 # Placeholder for your OpenRouter API Key - REPLACE THIS!
-OPENROUTER_API_KEY = "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" # Corrected the string termination
+OPENROUTER_API_KEY = "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" # Corrected the string termination
 # It's highly recommended to use environment variables for API keys in production.
 # Example: OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY") (requires import os)
 
@@ -18,7 +18,7 @@ def call_openrouter_api(prompt_text, api_key):
     """
     Calls the OpenRouter API with a given prompt using the OpenAI library.
     """
-    if not api_key or api_key == "YOUR_OPENROUTER_API_KEY_HERE": # Check against the generic placeholder
+    if not api_key or api_key == "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":
         print("ERROR: OpenRouter API key is not set or is still the placeholder 'YOUR_OPENROUTER_API_KEY_HERE'. Please ensure your actual API key is assigned to OPENROUTER_API_KEY at the top of fitaicoach_core.py.")
         return None
 
@@ -60,18 +60,18 @@ def call_openrouter_api(prompt_text, api_key):
             print("Error: OpenAI API response format not as expected.")
             print(f"Full response: {completion}")
             return None
-    except OpenAI.APIStatusError as e:
+    except APIStatusError as e: # Changed to direct exception name
         print(f"OpenRouter API returned an API Status Error: {e.status_code} - {e.message}")
         print(f"Response body: {e.response.text if e.response else 'N/A'}")
         return None
-    except OpenAI.APIConnectionError as e:
+    except APIConnectionError as e: # Changed to direct exception name
         print(f"Failed to connect to OpenRouter API: {e}")
         return None
-    except OpenAI.AuthenticationError as e:
+    except AuthenticationError as e: # Changed to direct exception name
         print(f"OpenRouter API authentication failed: {e.message}")
         print("Please double-check your OPENROUTER_API_KEY at the top of fitaicoach_core.py.")
         return None
-    except OpenAI.RateLimitError as e:
+    except RateLimitError as e: # Changed to direct exception name
         print(f"OpenRouter API rate limit exceeded: {e.message}")
         return None
     except Exception as e:

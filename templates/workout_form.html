@@ -3,416 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Plan - FitAI Coach</title>
+    <title>FitAiCoach - Your Personalized Fitness Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-/* General Reset & Body */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f0f2f5; /* Softer background */
-    color: #333;
-    line-height: 1.6;
-    display: flex; /* For centering container */
-    justify-content: center; /* For centering container */
-    align-items: flex-start; /* Align to top if content is long */
-    min-height: 100vh;
-}
-
-.container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 768px; /* Wider for better content display */
-    margin: 20px; /* Ensure some margin on small screens */
-    box-sizing: border-box;
-}
-
-h1 {
-    color: #1a237e; /* Dark blue */
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 2em;
-}
-
-/* Form Styling */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px; /* Increased gap */
-}
-
-label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px; /* Add some space below label */
-}
-
-input[type="number"],
-input[type="text"],
-select {
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 1em;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="number"]:focus,
-input[type="text"]:focus,
-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-    outline: none;
-}
-
-/* Button Styling */
-button[type="submit"] { /* More specific selector */
-    background-color: #28a745; /* Green */
-    color: white;
-    border: none;
-    padding: 15px 20px; /* Increased padding */
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.1em; /* Slightly larger font */
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    width: 100%; /* Full width */
-    margin-top: 10px; /* Space above button */
-}
-
-button[type="submit"]:hover {
-    background-color: #218838; /* Darker green */
-    transform: translateY(-1px); /* Subtle lift */
-}
-
-button[type="submit"]:active {
-    transform: translateY(0px); /* Press down effect */
-}
-
-
-/* Loading Indicator */
-#loadingIndicator {
-    text-align: center;
-    margin: 25px 0;
-    padding: 15px;
-    background-color: #e9ecef;
-    border-radius: 6px;
-    color: #495057;
-}
-#loadingIndicator p {
-    margin: 0;
-    font-size: 1.1em;
-}
-
-/* Result & Error Display */
-.result, .error {
-    margin-top: 25px;
-    padding: 20px;
-    border-radius: 6px;
-    text-align: left;
-}
-
-.result {
-    background-color: #f8f9fa; /* Light grey for overall result area */
-    border: 1px solid #e9ecef;
-}
-
-.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    text-align: center; /* Errors can be centered */
-}
-
-/* Plan Sections (Workout & Nutrition) */
-.workout-plan, .nutrition-plan {
-    background-color: #ffffff; /* White background for cards within result area */
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.workout-plan:last-child, .nutrition-plan:last-child {
-    margin-bottom: 0; /* Remove margin for the last plan section */
-}
-
-.workout-plan h2, .nutrition-plan h3 { /* Plan titles */
-    color: #0056b3; /* Consistent blue for plan titles */
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
-}
-
-.nutrition-plan h3 { /* Nutrition plan title might be h3 */
-    font-size: 1.5em; /* Ensure it's prominent */
-}
-
-
-.workout-plan p, .nutrition-plan p { /* Descriptions */
-    margin-bottom: 15px;
-    color: #555;
-}
-
-/* Exercise and Meal Cards */
-.exercise, .meal {
-    background-color: #fdfdfd; /* Slightly off-white for cards */
-    border: 1px solid #e0e0e0;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.exercise:last-child, .meal:last-child {
-    margin-bottom: 0;
-}
-
-.exercise h3, .meal h4 { /* Exercise/Meal names */
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #28a745; /* Green for item titles */
-    font-size: 1.2em;
-}
-
-.exercise p, .meal p {
-    margin: 8px 0;
-    color: #444;
-}
-.exercise p strong, .meal p strong {
-    color: #333;
-}
-
-/* Link Styling */
-a {
-    color: #007bff;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    margin-top: 25px;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    body {
-        padding: 10px;
-    }
-    .container {
-        padding: 20px;
-        margin: 10px;
-    }
-    h1 {
-        font-size: 1.8em;
-    }
-    button[type="submit"] {
-        padding: 12px;
-        font-size: 1em;
-    }
-    .workout-plan, .nutrition-plan {
-        padding: 15px;
-    }
-    .exercise, .meal {
-        padding: 12px;
-    }
-}
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+            border-color: #667eea; /* Added for better focus indication */
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(102, 126, 234, 0.6);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Get Your Personalized Workout Plan</h1>
-        <form id="workoutForm">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" required>
+<body class="py-8 px-4">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="gradient-bg text-white rounded-2xl p-6 shadow-xl mb-6">
+                <h1 class="text-4xl md:text-5xl font-bold mb-2">FitAiCoach</h1>
+                <p class="text-xl opacity-90">Your personalized fitness journey starts here</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <p class="text-gray-700">
+                    <i class="fas fa-info-circle text-purple-600 mr-2"></i>
+                    Complete the form below to receive your customized fitness and nutrition plan.
+                    <a href="/" class="text-purple-600 hover:text-purple-800 font-medium ml-4"><i class="fas fa-home mr-1"></i>Back to Home</a>
+                </p>
+            </div>
+        </header>
 
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-
-            <label for="goal">Fitness Goal:</label>
-            <select id="goal" name="goal" required>
-                <option value="Weight Loss">Weight Loss</option>
-                <option value="Muscle Gain">Muscle Gain</option>
-                <option value="Maintenance">Maintenance</option>
-            </select>
-
-            <label for="activity_level">Activity Level (1-5, 5 is very active):</label>
-            <input type="number" id="activity_level" name="activity_level" min="1" max="5" required>
-
-            <label for="weight">Weight (kg):</label>
-            <input type="number" id="weight" name="weight" required>
-
-            <label for="equipment_list">Available Equipment (comma-separated, e.g., bodyweight, dumbbells):</label>
-            <input type="text" id="equipment_list" name="equipment_list" value="bodyweight">
-            
-            <label for="dietary_habits">Dietary Habits (e.g., vegetarian, vegan, allergies):</label>
-            <input type="text" id="dietary_habits" name="dietary_habits" placeholder="e.g., vegetarian, no nuts">
-
-            <button type="submit">Get My AI Coach Plan</button>
-        </form>
-
-        <div id="loadingIndicator" style="display:none;">
-            <p>Generating your plan... Please wait.</p>
+        <!-- Main Form -->
+        <main class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <form id="fitnessForm" class="p-6 md:p-8">
+                <!-- Personal Information Section -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-user-circle text-purple-600 mr-3"></i>
+                        Personal Information
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Age -->
+                        <div>
+                            <label for="age" class="block text-gray-700 font-medium mb-2">Age</label>
+                            <div class="relative">
+                                <input type="number" id="age" name="age" min="13" max="100" 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none input-focus transition duration-300"
+                                    placeholder="Enter your age" required>
+                                <div class="absolute right-3 top-3 text-gray-400">
+                                    <i class="fas fa-birthday-cake"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Gender -->
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="Male" class="h-5 w-5 text-purple-600 focus:ring-purple-500" checked>
+                                    <span class="ml-2 text-gray-700">Male</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="Female" class="h-5 w-5 text-purple-600 focus:ring-purple-500">
+                                    <span class="ml-2 text-gray-700">Female</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="Other" class="h-5 w-5 text-purple-600 focus:ring-purple-500">
+                                    <span class="ml-2 text-gray-700">Other</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fitness Goals Section -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-bullseye text-purple-600 mr-3"></i>
+                        Fitness Goals
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Fitness Goal -->
+                        <div>
+                            <label for="fitnessGoal" class="block text-gray-700 font-medium mb-2">Fitness Goal</label>
+                            <div class="relative">
+                                <select id="fitnessGoal" name="fitnessGoal" 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none input-focus appearance-none transition duration-300"
+                                    required>
+                                    <option value="" disabled selected>Select your goal</option>
+                                    <option value="Weight Loss">Weight Loss</option>
+                                    <option value="Muscle Gain">Muscle Gain</option>
+                                    <option value="Endurance Training">Endurance Training</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Toning">Toning</option>
+                                </select>
+                                <div class="absolute right-3 top-3 text-gray-400 pointer-events-none">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Activity Level -->
+                        <div>
+                            <label for="activityLevel" class="block text-gray-700 font-medium mb-2">Activity Level</label>
+                            <div class="flex items-center">
+                                <input type="range" id="activityLevel" name="activityLevel" min="1" max="5" value="3" 
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                    oninput="updateActivityLevel()">
+                                <span id="activityLevelValue" class="ml-4 w-8 h-8 flex items-center justify-center bg-yellow-100 text-yellow-800 rounded-full font-medium">3</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Sedentary</span>
+                                <span>Very Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Physical Stats Section -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-weight text-purple-600 mr-3"></i>
+                        Physical Stats
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Weight -->
+                        <div>
+                            <label for="weight" class="block text-gray-700 font-medium mb-2">Weight (kg)</label>
+                            <div class="relative">
+                                <input type="number" id="weight" name="weight" min="30" max="200" step="0.1"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none input-focus transition duration-300"
+                                    placeholder="Enter your weight" required>
+                                <div class="absolute right-3 top-3 text-gray-400">
+                                    <i class="fas fa-weight-hanging"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Equipment -->
+                        <div>
+                            <label for="equipment" class="block text-gray-700 font-medium mb-2">Available Equipment</label>
+                            <div class="relative">
+                                <input type="text" id="equipment" name="equipment"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none input-focus transition duration-300"
+                                    placeholder="e.g., bodyweight, dumbbells" value="bodyweight" required>
+                                <div class="absolute right-3 top-3 text-gray-400">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dietary Information Section -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-utensils text-purple-600 mr-3"></i>
+                        Dietary Information
+                    </h2>
+                    
+                    <div>
+                        <label for="dietaryHabits" class="block text-gray-700 font-medium mb-2">Dietary Habits</label>
+                        <div class="relative">
+                            <textarea id="dietaryHabits" name="dietaryHabits" rows="3"
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none input-focus transition duration-300"
+                                placeholder="e.g., vegetarian, vegan, allergies"></textarea>
+                            <div class="absolute right-3 top-3 text-gray-400">
+                                <i class="fas fa-carrot"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="text-center mt-12">
+                    <button type="submit" id="submitBtn"
+                        class="gradient-bg text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl btn-hover transition-all duration-300 pulse">
+                        <i class="fas fa-magic mr-2"></i> Get My Plan
+                    </button>
+                </div>
+            </form>
+        </main>
+        
+        <!-- Loading Modal -->
+        <div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500 mx-auto mb-6"></div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Creating Your Plan</h3>
+                <p class="text-gray-600">Our AI is analyzing your inputs to create a personalized fitness and nutrition plan...</p>
+            </div>
         </div>
 
-        <div id="workoutPlan" class="result" style="display:none;"></div>
-        <div id="workoutError" class="error" style="display:none;"></div>
-        <a href="/">Back to Home</a>
+        <!-- Results Section -->
+        <div id="planResults" class="mt-10"></div>
+
     </div>
 
     <script>
-        document.getElementById('workoutForm').addEventListener('submit', async function(event) {
+        // Update activity level display
+        function updateActivityLevel() {
+            const slider = document.getElementById('activityLevel');
+            const valueSpan = document.getElementById('activityLevelValue');
+            valueSpan.textContent = slider.value;
+            
+            const colors = [
+                'bg-red-100 text-red-800', // 1
+                'bg-orange-100 text-orange-800', // 2
+                'bg-yellow-100 text-yellow-800', // 3
+                'bg-blue-100 text-blue-800', // 4
+                'bg-green-100 text-green-800' // 5
+            ];
+            valueSpan.className = `ml-4 w-8 h-8 flex items-center justify-center rounded-full font-medium ${colors[slider.value - 1]}`;
+        }
+        
+        // Form submission
+        document.getElementById('fitnessForm').addEventListener('submit', async function(event) {
             event.preventDefault();
+            
+            const loadingModal = document.getElementById('loadingModal');
+            const planResultsDiv = document.getElementById('planResults');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Clear previous results and errors
+            planResultsDiv.innerHTML = '';
+            loadingModal.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+
             const formData = new FormData(event.target);
-            const data = Object.fromEntries(formData.entries());
-
-            // Convert numeric fields from string to number
-            data.age = parseInt(data.age);
-            data.activity_level = parseInt(data.activity_level);
-            data.weight = parseFloat(data.weight); 
-
-            const resultDiv = document.getElementById('workoutPlan');
-            const errorDiv = document.getElementById('workoutError');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-
-            resultDiv.innerHTML = ''; 
-            resultDiv.style.display = 'none';
-            errorDiv.style.display = 'none';
-            loadingIndicator.style.display = 'block'; // Show loading indicator
+            const data = {
+                age: parseInt(formData.get('age')),
+                gender: formData.get('gender'),
+                goal: formData.get('fitnessGoal'), // Map fitnessGoal to goal
+                activity_level: parseInt(formData.get('activityLevel')), // Map activityLevel to activity_level
+                weight: parseFloat(formData.get('weight')),
+                equipment_list: formData.get('equipment'), // Map equipment to equipment_list
+                dietary_habits: formData.get('dietaryHabits') // Map dietaryHabits to dietary_habits
+            };
+            console.log('Form Data Submitted:', data); // Log submitted data
 
             try {
-                const response = await fetch('/get_workout', {
+                // Fetch Workout Plan
+                console.log('Fetching workout plan...'); // Log before fetch
+                const workoutResponse = await fetch('/get_workout', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        age: data.age, 
-                        gender: data.gender, 
-                        goal: data.goal, 
-                        activity_level: data.activity_level, 
-                        weight: data.weight, 
-                        equipment_list: data.equipment_list 
+                        age: data.age,
+                        gender: data.gender,
+                        goal: data.goal,
+                        activity_level: data.activity_level,
+                        weight: data.weight,
+                        equipment_list: data.equipment_list
                     })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => { throw new Error(err.error || 'Network response was not ok for workout.') });
-                    }
-                    return response.json();
                 });
 
-                if (response.error) {
-                    errorDiv.textContent = response.error;
-                    errorDiv.style.display = 'block';
-                } else if (response.name && response.description && response.exercises) {
-                    resultDiv.innerHTML = `
-                        <div class="workout-plan">
-                            <h2>${response.name}</h2>
-                            <p>${response.description}</p>
-                            <h3>Exercises:</h3>
+                console.log('Workout Response Status:', workoutResponse.status); // Log response status
+
+                if (!workoutResponse.ok) {
+                    const errText = await workoutResponse.text(); // Get raw text
+                    console.error('Workout response not OK. Raw response:', errText);
+                    let errJson = {};
+                    try { errJson = JSON.parse(errText); } catch (e) { console.error("Failed to parse workout error as JSON", e); }
+                    throw new Error(errJson.error || `Failed to fetch workout plan. Status: ${workoutResponse.status}`);
+                }
+                const workoutData = await workoutResponse.json();
+                console.log('Workout Data Received:', workoutData); // Log received workout data
+
+                let workoutHtml = '';
+                if (workoutData.error) {
+                    console.log('Workout API returned an error:', workoutData.error); // Log API error
+                    workoutHtml = `<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-md mb-6" role="alert">
+                                     <p class="font-bold">Workout Plan Error</p>
+                                     <p>${workoutData.error}</p>
+                                   </div>`;
+                } else if (workoutData.name && workoutData.description && workoutData.exercises) {
+                    workoutHtml = `
+                        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-8">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-dumbbell text-purple-600 mr-3"></i> ${workoutData.name}
+                            </h2>
+                            <p class="text-gray-700 mb-6">${workoutData.description}</p>
+                            <div class="space-y-4">
+                                ${workoutData.exercises.map(exercise => `
+                                    <div class="bg-purple-50 p-4 rounded-lg shadow transition-all duration-300 hover:shadow-md">
+                                        <h3 class="text-lg font-semibold text-purple-700">${exercise.name}</h3>
+                                        <p class="text-sm text-gray-600">Sets: ${exercise.sets}</p>
+                                        <p class="text-sm text-gray-600">Reps: ${exercise.reps}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
                         </div>
                     `;
-                    response.exercises.forEach(exercise => {
-                        const exerciseDiv = document.createElement('div');
-                        exerciseDiv.classList.add('exercise');
-                        
-                        exerciseDiv.innerHTML = `
-                            <h3>${exercise.name}</h3>
-                            <p><strong>Sets:</strong> ${exercise.sets}</p>
-                            <p><strong>Reps:</strong> ${exercise.reps}</p>
-                        `;
-                        // Append to the .workout-plan div, not resultDiv directly initially for structure
-                        resultDiv.querySelector('.workout-plan').appendChild(exerciseDiv);
-                    });
-                    resultDiv.style.display = 'block';
+                }
+                console.log('Generated Workout HTML:', workoutHtml); // Log generated HTML
+                planResultsDiv.innerHTML += workoutHtml;
 
-                    // Now, fetch and display nutrition plan
-                    try {
-                        const nutritionResponse = await fetch('/get_nutrition', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                goal: data.goal,
-                                dietary_habits: data.dietary_habits // Ensure this is picked up from the form
-                            })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(err => { throw new Error(err.error || 'Network response was not ok for nutrition.') });
-                            }
-                            return response.json();
-                        });
 
-                        if (nutritionResponse && nutritionResponse.plan_name && nutritionResponse.meals) {
-                            const nutritionDiv = document.createElement('div');
-                            nutritionDiv.classList.add('nutrition-plan');
-                            let mealsHTML = '';
-                            nutritionResponse.meals.forEach(meal => {
-                                mealsHTML += `
-                                    <div class="meal">
-                                        <h4>${meal.name}</h4>
-                                        <p><strong>Recipe:</strong> ${meal.recipe}</p>
-                                        ${meal.ingredients && meal.ingredients.length > 0 ? `<p><strong>Ingredients:</strong> ${meal.ingredients.join(', ')}</p>` : ''}
+                // Fetch Nutrition Plan
+                console.log('Fetching nutrition plan...'); // Log before fetch
+                const nutritionResponse = await fetch('/get_nutrition', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        goal: data.goal,
+                        dietary_habits: data.dietary_habits
+                    })
+                });
+
+                console.log('Nutrition Response Status:', nutritionResponse.status); // Log response status
+
+                if (!nutritionResponse.ok) {
+                    const errText = await nutritionResponse.text(); // Get raw text
+                    console.error('Nutrition response not OK. Raw response:', errText);
+                    let errJson = {};
+                    try { errJson = JSON.parse(errText); } catch (e) { console.error("Failed to parse nutrition error as JSON", e); }
+                    throw new Error(errJson.error || `Failed to fetch nutrition plan. Status: ${nutritionResponse.status}`);
+                }
+                const nutritionData = await nutritionResponse.json();
+                console.log('Nutrition Data Received:', nutritionData); // Log received nutrition data
+                
+                let nutritionHtml = '';
+                if (nutritionData.error) {
+                    console.log('Nutrition API returned an error:', nutritionData.error); // Log API error
+                     nutritionHtml = `<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-md" role="alert">
+                                     <p class="font-bold">Nutrition Plan Error</p>
+                                     <p>${nutritionData.error}</p>
+                                   </div>`;
+                } else if (nutritionData.plan_name && nutritionData.meals) {
+                    nutritionHtml = `
+                        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-apple-alt text-green-600 mr-3"></i> ${nutritionData.plan_name}
+                            </h2>
+                            ${nutritionData.description ? `<p class="text-gray-700 mb-6">${nutritionData.description}</p>` : ''}
+                            <div class="space-y-4">                                ${nutritionData.meals.map(meal => `
+                                    <div class="bg-green-50 p-4 rounded-lg shadow transition-all duration-300 hover:shadow-md">
+                                        <h3 class="text-lg font-semibold text-green-700">${meal.meal_name || meal.name || 'Meal'}</h3>
+                                        <p class="text-sm text-gray-600">${meal.recipe ? meal.recipe.replace(/\\n/g, '<br>') : 'No recipe available'}</p>
+                                        ${meal.ingredients && meal.ingredients.length > 0 ? `<p class="text-xs text-gray-500 mt-1">Ingredients: ${meal.ingredients.join(', ')}</p>` : ''}
+                                        ${meal.calories ? `<p class="text-xs text-blue-600 mt-1 font-medium">${meal.calories}</p>` : ''}
                                     </div>
-                                `;
-                            });
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else if (nutritionData.nutrition_advice) {
+                     nutritionHtml = `
+                        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-apple-alt text-green-600 mr-3"></i> Nutrition Advice
+                            </h2>
+                            <p class="text-gray-700">${nutritionData.nutrition_advice.replace(/\\n/g, '<br>')}</p>
+                        </div>
+                    `;
+                }
+                console.log('Generated Nutrition HTML:', nutritionHtml); // Log generated HTML
+                planResultsDiv.innerHTML += nutritionHtml;
 
-                            nutritionDiv.innerHTML = `
-                                <h3>${nutritionResponse.plan_name}</h3>
-                                <p>${nutritionResponse.description || ''}</p> <!-- Added description for nutrition -->
-                                ${mealsHTML}
-                            `;
-                            resultDiv.appendChild(nutritionDiv);
-                        } else if (nutritionResponse.nutrition_advice) { 
-                            const nutritionDiv = document.createElement('div');
-                            nutritionDiv.classList.add('nutrition-plan');
-                            nutritionDiv.innerHTML = `
-                                <h3>Your Nutrition Advice:</h3>
-                                <p>${nutritionResponse.nutrition_advice.replace(/\\n/g, '<br>')}</p>
-                            `;
-                            resultDiv.appendChild(nutritionDiv);
-                        }
-                    } catch (nutritionError) {
-                        console.warn('Error fetching nutrition plan:', nutritionError);
-                        const nutritionErrorP = document.createElement('p');
-                        nutritionErrorP.style.color = 'orange';
-                        nutritionErrorP.style.textAlign = 'center';
-                        nutritionErrorP.style.marginTop = '10px';
-                        nutritionErrorP.textContent = 'Could not load nutrition advice at this time.';
-                        resultDiv.appendChild(nutritionErrorP);
-                    }
-
-                } else {
-                    errorDiv.textContent = 'Received unexpected plan format from the server. Check console for details.';
-                    console.error('Unexpected plan format:', response);
-                    errorDiv.style.display = 'block';
+                if (!workoutHtml && !nutritionHtml && !planResultsDiv.innerHTML.includes('Error')) {
+                     console.log('No workout or nutrition HTML generated, and no explicit error displayed yet.'); // Log if no content
+                     planResultsDiv.innerHTML = `<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md" role="alert">
+                                     <p class="font-bold">No Plan Generated</p>
+                                     <p>The AI could not generate a plan with the provided details. Please try adjusting your inputs.</p>
+                                   </div>`;
                 }
 
+
             } catch (error) {
-                console.error('Error fetching workout plan:', error);
-                errorDiv.textContent = 'Error fetching workout plan: ' + error.message;
-                errorDiv.style.display = 'block';
+                console.error('Error processing plan:', error);
+                planResultsDiv.innerHTML = `
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-md" role="alert">
+                        <p class="font-bold">An Error Occurred</p>
+                        <p>${error.message || 'Could not generate your plan. Please try again.'}</p>
+                    </div>
+                `;
             } finally {
-                loadingIndicator.style.display = 'none'; // Hide loading indicator
+                loadingModal.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                // Scroll to results
+                if(planResultsDiv.innerHTML.trim() !== '') {
+                    planResultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         });
+        
+        // Initialize activity level display
+        updateActivityLevel();
     </script>
 </body>
 </html>

@@ -1,18 +1,37 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# Environment
-.env
-.venv
-venv/
-ENV/
-env/
+# dependencies
+node_modules/
 
-# IDE specific
-.vscode/
-.idea/
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
 
-# Other
-*.pkl
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+.vercel
